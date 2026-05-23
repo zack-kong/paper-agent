@@ -1,0 +1,131 @@
+# PaperAgent - 顶会顶刊白名单
+# 检索范围仅限于此列表中的会议/期刊
+
+robotics:
+  conferences:
+    - name: ICRA
+      full_name: IEEE International Conference on Robotics and Automation
+      domain: robotics
+    - name: IROS
+      full_name: IEEE/RSJ International Conference on Intelligent Robots and Systems
+      domain: robotics
+    - name: RSS
+      full_name: "Robotics: Science and Systems"
+      domain: robotics
+    - name: CoRL
+      full_name: Conference on Robot Learning
+      domain: robotics
+    - name: Humanoids
+      full_name: IEEE-RAS International Conference on Humanoid Robots
+      domain: robotics
+  journals:
+    - name: IEEE T-RO
+      full_name: IEEE Transactions on Robotics
+      domain: robotics
+    - name: IEEE RA-L
+      full_name: IEEE Robotics and Automation Letters
+      domain: robotics
+    - name: IJRR
+      full_name: International Journal of Robotics Research
+      domain: robotics
+    - name: Autonomous Robots
+      full_name: Autonomous Robots
+      domain: robotics
+    - name: T-ASE
+      full_name: IEEE Transactions on Automation Science and Engineering
+      domain: robotics
+    - name: T-MECH
+      full_name: IEEE/ASME Transactions on Mechatronics
+      domain: robotics
+
+ai_security:
+  security_top4:
+    - name: IEEE S&P
+      full_name: IEEE Symposium on Security and Privacy
+      aliases: [Oakland, S&P]
+      domain: ai_security
+    - name: ACM CCS
+      full_name: ACM Conference on Computer and Communications Security
+      domain: ai_security
+    - name: NDSS
+      full_name: Network and Distributed System Security Symposium
+      domain: ai_security
+    - name: USENIX Security
+      full_name: USENIX Security Symposium
+      domain: ai_security
+  crypto:
+    - name: CRYPTO
+      full_name: International Cryptology Conference
+      domain: ai_security
+    - name: EUROCRYPT
+      full_name: European Cryptology Conference
+      domain: ai_security
+    - name: ASIACRYPT
+      full_name: International Conference on the Theory and Application of Cryptology and Information Security
+      domain: ai_security
+    - name: TCC
+      full_name: Theory of Cryptography Conference
+      domain: ai_security
+  ml_security:
+    - name: IEEE TDSC
+      full_name: IEEE Transactions on Dependable and Secure Computing
+      domain: ai_security
+    - name: IEEE TIFS
+      full_name: IEEE Transactions on Information Forensics and Security
+      domain: ai_security
+    - name: PoPETs
+      full_name: Proceedings on Privacy Enhancing Technologies
+      domain: ai_security
+
+general_ai:
+  conferences:
+    - name: ICML
+      full_name: International Conference on Machine Learning
+      domain: general_ai
+    - name: NeurIPS
+      full_name: Conference on Neural Information Processing Systems
+      domain: general_ai
+    - name: ICLR
+      full_name: International Conference on Learning Representations
+      domain: general_ai
+    - name: AAAI
+      full_name: AAAI Conference on Artificial Intelligence
+      domain: general_ai
+    - name: IJCAI
+      full_name: International Joint Conference on Artificial Intelligence
+      domain: general_ai
+    - name: CVPR
+      full_name: IEEE/CVF Conference on Computer Vision and Pattern Recognition
+      domain: general_ai
+    - name: ICCV
+      full_name: IEEE/CVF International Conference on Computer Vision
+      domain: general_ai
+    - name: ECCV
+      full_name: European Conference on Computer Vision
+      domain: general_ai
+    - name: ACL
+      full_name: Annual Meeting of the Association for Computational Linguistics
+      domain: general_ai
+  journals:
+    - name: JMLR
+      full_name: Journal of Machine Learning Research
+      domain: general_ai
+    - name: TPAMI
+      full_name: IEEE Transactions on Pattern Analysis and Machine Intelligence
+      domain: general_ai
+    - name: TMLR
+      full_name: Transactions on Machine Learning Research
+      domain: general_ai
+    - name: Nature Machine Intelligence
+      full_name: Nature Machine Intelligence
+      domain: general_ai
+
+# 可信源域名
+trusted_domains:
+  - arxiv.org
+  - openreview.net
+  - ieee.org
+  - acm.org
+  - usenix.org
+  - ndss-symposium.org
+  - proceedings.mlr.press
