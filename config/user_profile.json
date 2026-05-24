@@ -1,5 +1,19 @@
 {
-  "search_history": [],
+  "search_history": [
+    {
+      "query": "embodied intelligence world model",
+      "adopted_titles": [
+        "World-Ego Modeling for Long-Horizon Evolution in Hybrid Embodied Tasks",
+        "WorldArena 2.0: Extending Embodied World Model Benchmarking on Modality, Functionality and Platform",
+        "RoboFlow4D: A Lightweight Flow World Model Toward Real-Time Flow-Guided Robotic Manipulation"
+      ],
+      "rejected_titles": [
+        "Realtime-VLA FLASH: Speculative Inference Framework for Diffusion-based VLAs",
+        "WhiteTesseract: Reframing the Interpretation of Cultural Heritage through XR and Conversational AI"
+      ],
+      "venue_names": []
+    }
+  ],
   "preferences": {
     "preferred_domains": [],
     "preferred_venues": [],
@@ -8,7 +22,35 @@
     "preferred_language": "zh",
     "tags": []
   },
-  "adopted": [],
-  "rejected": [],
-  "interaction_count": 0
+  "adopted": [
+    {
+      "title": "World-Ego Modeling for Long-Horizon Evolution in Hybrid Embodied Tasks",
+      "venue": "",
+      "year": 2026,
+      "relevance_score": 5
+    },
+    {
+      "title": "WorldArena 2.0: Extending Embodied World Model Benchmarking on Modality, Functionality and Platform",
+      "venue": "",
+      "year": 2026,
+      "relevance_score": 5
+    },
+    {
+      "title": "RoboFlow4D: A Lightweight Flow World Model Toward Real-Time Flow-Guided Robotic Manipulation",
+      "venue": "",
+      "year": 2026,
+      "relevance_score": 5
+    }
+  ],
+  "rejected": [
+    {
+      "title": "Realtime-VLA FLASH: Speculative Inference Framework for Diffusion-based VLAs",
+      "reason": "领域相关"
+    },
+    {
+      "title": "WhiteTesseract: Reframing the Interpretation of Cultural Heritage through XR and Conversational AI",
+      "reason": "领域相关"
+    }
+  ],
+  "interaction_count": 1
 }

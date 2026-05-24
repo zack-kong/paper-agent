@@ -14,11 +14,9 @@ from rich.table import Table
 
 from ..core.paper import Paper, SearchResult, UserProfile
 from ..core.search_engine import (
-    execute_search_batch,
-    build_search_batches,
-    deduplicate,
-    rank_results,
+    analyze_query,
     recommend_venues,
+    search_papers,
 )
 from ..core.validator import validate_paper, validate_results
 
@@ -213,9 +211,17 @@ def run_search_mode(
             f"[dim]已学习的偏好会议: {', '.join(profile.preferences.get('preferred_venues', [])[:5])}[/dim]"
         )
 
-    # Step 1: Recommend venues
-    venues = recommend_venues(query)
-    _display_venue_recommendations(venues, query)
+    # Step 1: Query analysis (translation + concept extraction) and venue recommendation
+    # Note: search_papers() also accepts the analysis to avoid a second API call
+    analysis = analyze_query(query)
+
+    if analysis.is_chinese and analysis.translated_query != query:
+        console.print(f"\n[bold]查询翻译:[/bold] [cyan]{query}[/cyan] → [green]{analysis.translated_query}[/green]")
+        if analysis.key_concepts:
+            console.print(f"[bold]提取概念:[/bold] {', '.join(analysis.key_concepts)}")
+
+    venues = recommend_venues(query, analysis=analysis)
+    _display_venue_recommendations(venues, analysis.translated_query or query)
 
     if not auto_confirm:
         console.print("\n你可以：✅ 确认 / 🔄 换推荐 / ➕ 添加会议 / 🔍 调整时间范围")
@@ -235,34 +241,33 @@ def run_search_mode(
         except (ValueError, IndexError):
             console.print("[red]时间格式错误，使用默认近 3 年[/red]")
 
-    # Step 2-3: Build batches and execute
+    # Step 2-5: Execute search with AI optimization + self-evaluation
     console.print("\n[bold]正在执行搜索...[/bold]")
-    batches = build_search_batches(query, venues, years)
+    results, evaluation = search_papers(query, venues, years, analysis=analysis)
+    # Note: execute_search_batch, build_search_batches, deduplicate, rank_results
+    # are now internal to search_papers()
 
-    all_papers: list[Paper] = []
-    for i, batch in enumerate(batches):
-        console.print(f"  批次 {i+1}/{len(batches)}: {batch['description']}")
-        papers = execute_search_batch(batch["description"], batch["query"])
-        console.print(f"    找到 {len(papers)} 篇候选")
-        all_papers.extend(papers)
-
-    if not all_papers:
+    if not results:
         console.print("[yellow]未找到结果。尝试调整关键词或会议范围。[/yellow]")
+        if evaluation.suggested_queries:
+            console.print(f"[dim]建议尝试: {', '.join(evaluation.suggested_queries[:3])}[/dim]")
         return []
 
-    # Step 4: Dedup and rank
-    all_papers = deduplicate(all_papers)
-    results = rank_results(all_papers, query)
+    # Step 5: Display AI evaluation summary
+    console.print(Panel.fit(
+        f"[bold]AI 评估: {'★' * evaluation.overall_quality}{'☆' * (5 - evaluation.overall_quality)}"
+        f" ({evaluation.overall_quality}/5)[/bold]\n"
+        f"{evaluation.summary}",
+        title="AI 自评结果",
+        border_style="blue",
+    ))
 
-    # Step 5: Anti-hallucination check
-    console.print("\n[bold]执行 Anti-Hallucination 检查...[/bold]")
-    for r in results:
-        vr = validate_paper(r.paper)
-        if vr.needs_verification:
-            console.print(f"  [red]⚠[/red] {r.paper.title[:60]}... {vr.verified_mark}")
-
-    # Step 6: Display results
+    # Step 6: Display results (with AI-adjusted scores)
     _display_search_results(results[:15])
+
+    if auto_confirm:
+        _learn_from_interaction(profile, query, results[:3], results[-2:] if len(results) > 3 else [])
+        return results
 
     # Step 7: Interactive refinement
     console.print("\n操作选项：✅ 确认结果 / 🔄 换一批 / ➕ 深入某篇 / 💾 保存 / 🚫 退出")

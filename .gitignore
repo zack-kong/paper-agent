@@ -8,4 +8,5 @@ venv/
 dist/
 reading_notes/
 search_results/
+eval_cache/
 .DS_Store

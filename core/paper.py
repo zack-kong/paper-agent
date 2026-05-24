@@ -55,6 +55,23 @@ class SearchResult(BaseModel):
     batch_number: int = 1
 
 
+class PaperEval(BaseModel):
+    """AI evaluation of a single paper's relevance to the user's query."""
+    title: str = ""
+    relevance_score: int = Field(default=3, ge=1, le=5)
+    reasoning: str = ""       # why this paper is (ir)relevant
+    is_irrelevant: bool = False
+
+
+class EvaluationResult(BaseModel):
+    """AI self-evaluation of the entire search result set."""
+    overall_quality: int = Field(default=3, ge=1, le=5)  # 1=poor, 5=excellent
+    summary: str = ""          # overall assessment
+    paper_evals: list[PaperEval] = Field(default_factory=list)
+    suggested_queries: list[str] = Field(default_factory=list)  # alternative queries
+    needs_retry: bool = False  # should we search again with new queries?
+
+
 class ValidationItem(BaseModel):
     check_name: str
     passed: bool = True
@@ -228,6 +245,18 @@ class ReadingNote(BaseModel):
             lines.append("- [ ] 复现关键实验")
 
         return "\n".join(lines)
+
+
+class QueryAnalysis(BaseModel):
+    """Pre-search query analysis: translation, concept extraction, term expansion."""
+    original_query: str = ""
+    translated_query: str = ""           # English academic translation
+    is_chinese: bool = False
+    key_concepts: list[str] = Field(default_factory=list)      # extracted academic concepts
+    expanded_terms: dict[str, list[str]] = Field(default_factory=dict)  # concept → synonyms
+    arxiv_search_terms: list[str] = Field(default_factory=list)  # ready-to-use arXiv queries
+    domain: str = ""                      # recommended research domain
+    suggested_venues: list[str] = Field(default_factory=list)    # venue name suggestions
 
 
 class UserProfile(BaseModel):
